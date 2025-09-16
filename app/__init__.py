@@ -35,18 +35,19 @@ def create_app(test_config: dict | None = None) -> Flask:
 
     app = Flask(__name__, instance_relative_config=False)
 
-    database_uri = os.getenv("DATABASE_URL")
-    if not database_uri:
-        database_uri = _default_database_uri()
-
-    app.config.update(
-        SECRET_KEY=os.getenv("FLASK_SECRET_KEY", "change-me"),
-        SQLALCHEMY_DATABASE_URI=database_uri,
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    )
+    config: dict[str, object] = {
+        "SECRET_KEY": os.getenv("FLASK_SECRET_KEY", "change-me"),
+        "SQLALCHEMY_DATABASE_URI": os.getenv("DATABASE_URL", ""),
+        "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+    }
 
     if test_config:
-        app.config.update(test_config)
+        config.update(test_config)
+
+    if not config.get("SQLALCHEMY_DATABASE_URI"):
+        config["SQLALCHEMY_DATABASE_URI"] = _default_database_uri()
+
+    app.config.update(config)
 
     # Initialize extensions
     db.init_app(app)
