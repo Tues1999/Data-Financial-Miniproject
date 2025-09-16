@@ -8,7 +8,7 @@ if errorlevel 1 (
 )
 
 :: Activate venv
-call .venv\Scripts\activate.bat
+.venv\Scripts\activate
 if errorlevel 1 (
     echo [ERROR] Failed to activate virtual environment.
     goto end
