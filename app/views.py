@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+from datetime import datetime
+from decimal import Decimal, InvalidOperation
 from io import BytesIO
 
 from flask import (
@@ -20,6 +22,7 @@ from flask_login import current_user, login_required
 from openpyxl import Workbook
 from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import func
 
 from . import db
 from .models import FinanceRecord
@@ -146,6 +149,33 @@ def dashboard():
 
     records = _load_user_records(current_user.id, ascending=False)
 
+                if amount <= 0:
+                    flash("จำนวนเงินต้องมากกว่า 0", "warning")
+                else:
+                    try:
+                        record_date = datetime.strptime(form_date, "%Y-%m-%d").date()
+                    except ValueError:
+                        flash("รูปแบบวันที่ไม่ถูกต้อง", "danger")
+                    else:
+                        record = FinanceRecord(
+                            user_id=current_user.id,
+                            record_date=record_date,
+                            category=category,
+                            description=description,
+                            amount=amount,
+                            record_type=record_type,
+                        )
+                        db.session.add(record)
+                        db.session.commit()
+                        flash("บันทึกข้อมูลเรียบร้อย", "success")
+                        return redirect(url_for("views.dashboard"))
+
+    records = (
+        FinanceRecord.query.filter_by(user_id=current_user.id)
+        .order_by(FinanceRecord.record_date.desc(), FinanceRecord.id.desc())
+        .all()
+    )
+
     income_total, expense_total, balance_total = _calculate_totals(current_user.id)
 
     return render_template(
@@ -163,6 +193,13 @@ def download_excel():
     """Generate an Excel file of the user's financial records."""
 
     records = _load_user_records(current_user.id, ascending=True)
+
+
+    records = (
+        FinanceRecord.query.filter_by(user_id=current_user.id)
+        .order_by(FinanceRecord.record_date.asc(), FinanceRecord.id.asc())
+        .all()
+    )
 
     income_total, expense_total, balance_total = _calculate_totals(current_user.id)
 
