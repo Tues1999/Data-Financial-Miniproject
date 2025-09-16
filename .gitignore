@@ -1,0 +1,17 @@
+__pycache__/
+instance/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+.env
+.venv/
+venv/
+finance.db
+.pytest_cache/
+build/
+dist/
+*.spec
+.idea/
+.DS_Store
