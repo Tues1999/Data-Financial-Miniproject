@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">ข้อมูลการเงินของฉัน</h1>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">บันทึกข้อมูลใหม่</h5>
+        <form method="post">
+          <div class="mb-3">
+            <label for="record_date" class="form-label">วันที่</label>
+            <input type="date" class="form-control" id="record_date" name="record_date" required>
+          </div>
+          <div class="mb-3">
+            <label for="record_type" class="form-label">ประเภท</label>
+            <select class="form-select" id="record_type" name="record_type" required>
+              <option value="" selected disabled>เลือกประเภท</option>
+              <option value="income">รายรับ</option>
+              <option value="expense">รายจ่าย</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="category" class="form-label">หมวดหมู่</label>
+            <input type="text" class="form-control" id="category" name="category" placeholder="เช่น เงินเดือน, ค่าเดินทาง" required>
+          </div>
+          <div class="mb-3">
+            <label for="amount" class="form-label">จำนวนเงิน (บาท)</label>
+            <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">รายละเอียดเพิ่มเติม</label>
+            <textarea class="form-control" id="description" name="description" rows="3" placeholder="ไม่จำเป็นต้องกรอก"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">บันทึก</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">ประวัติการบันทึก</h5>
+      <a class="btn btn-outline-success" href="{{ url_for('views.download_excel') }}">ดาวน์โหลด Excel</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">วันที่</th>
+            <th scope="col">ประเภท</th>
+            <th scope="col">หมวดหมู่</th>
+            <th scope="col">รายละเอียด</th>
+            <th scope="col" class="text-end">จำนวนเงิน (บาท)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if records %}
+            {% for record in records %}
+            <tr>
+              <td>{{ record.record_date.strftime('%d/%m/%Y') }}</td>
+              <td>
+                {% if record.record_type == 'income' %}
+                  <span class="badge bg-success">รายรับ</span>
+                {% else %}
+                  <span class="badge bg-danger">รายจ่าย</span>
+                {% endif %}
+              </td>
+              <td>{{ record.category }}</td>
+              <td>{{ record.description or '-' }}</td>
+              <td class="text-end">{{ '{:,.2f}'.format(record.amount) }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="5" class="text-center text-muted">ยังไม่มีข้อมูล</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

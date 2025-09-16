@@ -1,0 +1,25 @@
+body {
+  background-color: #f7f9fc;
+}
+
+.card {
+  border: none;
+  border-radius: 0.75rem;
+}
+
+.card-title {
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 0.9rem;
+}
+
+.table thead th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+}
+
+.flash-container {
+  margin-bottom: 1.5rem;
+}
