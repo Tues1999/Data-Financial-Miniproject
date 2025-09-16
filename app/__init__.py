@@ -1,3 +1,4 @@
+codex/create-web-app-with-login-and-data-export-ruoc1c
 import os
 from pathlib import Path
 
@@ -5,6 +6,14 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+=======
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from pathlib import Path
+from dotenv import load_dotenv
+import os
+main
 
 # Initialize extensions
 
@@ -12,6 +21,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 
 
+codex/create-web-app-with-login-and-data-export-ruoc1c
 def _default_database_uri() -> str:
     """Return the default SQLite URI, stored in a writable user directory."""
 
@@ -29,12 +39,15 @@ def _default_database_uri() -> str:
     return f"sqlite:///{resolved_path.as_posix()}"
 
 
+=======
+main
 def create_app(test_config: dict | None = None) -> Flask:
     """Application factory for the financial data tracker."""
     load_dotenv()
 
     app = Flask(__name__, instance_relative_config=False)
 
+codex/create-web-app-with-login-and-data-export-ruoc1c
     config: dict[str, object] = {
         "SECRET_KEY": os.getenv("FLASK_SECRET_KEY", "change-me"),
         "SQLALCHEMY_DATABASE_URI": os.getenv("DATABASE_URL", ""),
@@ -48,6 +61,19 @@ def create_app(test_config: dict | None = None) -> Flask:
         config["SQLALCHEMY_DATABASE_URI"] = _default_database_uri()
 
     app.config.update(config)
+=======
+    app.config.update(
+        SECRET_KEY=os.getenv("FLASK_SECRET_KEY", "change-me"),
+        SQLALCHEMY_DATABASE_URI=os.getenv(
+            "DATABASE_URL",
+            f"sqlite:///{Path(app.root_path).parent / 'finance.db'}",
+        ),
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    )
+
+    if test_config:
+        app.config.update(test_config)
+main
 
     # Initialize extensions
     db.init_app(app)

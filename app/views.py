@@ -13,7 +13,10 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from openpyxl import Workbook
+codex/create-web-app-with-login-and-data-export-ruoc1c
 from sqlalchemy import func
+=======
+main
 
 from . import db
 from .models import FinanceRecord
@@ -22,6 +25,7 @@ from .models import FinanceRecord
 views_bp = Blueprint("views", __name__)
 
 
+codex/create-web-app-with-login-and-data-export-ruoc1c
 def _calculate_totals(user_id: int) -> tuple[Decimal, Decimal, Decimal]:
     """Return total income, expense, and balance for a user."""
 
@@ -43,6 +47,8 @@ def _calculate_totals(user_id: int) -> tuple[Decimal, Decimal, Decimal]:
     return totals["income"], totals["expense"], balance
 
 
+=======
+main
 @views_bp.route("/", methods=["GET", "POST"])
 @login_required
 def dashboard():
@@ -64,6 +70,7 @@ def dashboard():
             except InvalidOperation:
                 flash("จำนวนเงินไม่ถูกต้อง", "danger")
             else:
+codex/create-web-app-with-login-and-data-export-ruoc1c
                 if amount <= 0:
                     flash("จำนวนเงินต้องมากกว่า 0", "warning")
                 else:
@@ -84,6 +91,24 @@ def dashboard():
                         db.session.commit()
                         flash("บันทึกข้อมูลเรียบร้อย", "success")
                         return redirect(url_for("views.dashboard"))
+                try:
+                    record_date = datetime.strptime(form_date, "%Y-%m-%d").date()
+                except ValueError:
+                    flash("รูปแบบวันที่ไม่ถูกต้อง", "danger")
+                else:
+                    record = FinanceRecord(
+                        user_id=current_user.id,
+                        record_date=record_date,
+                        category=category,
+                        description=description,
+                        amount=amount,
+                        record_type=record_type,
+                    )
+                    db.session.add(record)
+                    db.session.commit()
+                    flash("บันทึกข้อมูลเรียบร้อย", "success")
+                    return redirect(url_for("views.dashboard"))
+main
 
     records = (
         FinanceRecord.query.filter_by(user_id=current_user.id)
@@ -91,6 +116,7 @@ def dashboard():
         .all()
     )
 
+codex/create-web-app-with-login-and-data-export-ruoc1c
     income_total, expense_total, balance_total = _calculate_totals(current_user.id)
 
     return render_template(
@@ -100,6 +126,9 @@ def dashboard():
         expense_total=expense_total,
         balance_total=balance_total,
     )
+=======
+    return render_template("dashboard.html", records=records)
+main
 
 
 @views_bp.route("/download", methods=["GET"])
@@ -112,8 +141,11 @@ def download_excel():
         .all()
     )
 
+codex/create-web-app-with-login-and-data-export-ruoc1c
     income_total, expense_total, balance_total = _calculate_totals(current_user.id)
 
+=======
+main
     workbook = Workbook()
     worksheet = workbook.active
     worksheet.title = "ข้อมูลการเงิน"
@@ -140,12 +172,15 @@ def download_excel():
             ]
         )
 
+codex/create-web-app-with-login-and-data-export-ruoc1c
     if records:
         worksheet.append([])
         worksheet.append(["", "", "", "รวมรายรับ", float(income_total), ""])
         worksheet.append(["", "", "", "รวมรายจ่าย", float(expense_total), ""])
         worksheet.append(["", "", "", "คงเหลือ", float(balance_total), ""])
 
+=======
+main
     for column_cells in worksheet.columns:
         max_length = max(len(str(cell.value)) for cell in column_cells)
         column_letter = column_cells[0].column_letter
