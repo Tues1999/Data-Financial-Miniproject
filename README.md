@@ -41,10 +41,8 @@ Excel ที่มีตารางสรุปยอดท้ายไฟล�
 
 ## การติดตั้ง
 
-1. **เตรียมสภาพแวดล้อม Python** (แนะนำ Python 3.10 ขึ้นไป) และสร้าง virtual environment:
-   ```bash
-   ติดตั้ง python [<https://www.python.org/>](https://www.python.org/downloads/)
-   ```
+1. **เตรียมสภาพแวดล้อม Python** [Python](https://www.python.org/downloads/) (แนะนำ Python 3.10 ขึ้นไป) และสร้าง virtual environment:
+
    ```bash
    python -m venv .venv
    .venv\Scripts\activate
