@@ -11,6 +11,38 @@ body {
   font-weight: 600;
 }
 
+.summary-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.summary-label {
+  font-size: 0.95rem;
+  color: #64748b;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.summary-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.summary-card.income .summary-value,
+.summary-value.positive {
+  color: #198754;
+}
+
+.summary-card.expense .summary-value,
+.summary-value.negative {
+  color: #dc3545;
+}
+
+.summary-card.balance .summary-value {
+  color: #0d6efd;
+}
+
 .badge {
   font-size: 0.9rem;
 }

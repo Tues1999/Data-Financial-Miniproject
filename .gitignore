@@ -9,5 +9,14 @@ instance/
 .venv/
 venv/
 finance.db
+codex/create-web-app-with-login-and-data-export-ruoc1c
+.pytest_cache/
+.coverage
+coverage.xml
+build/
+dist/
+*.spec
+=======
+main
 .idea/
 .DS_Store

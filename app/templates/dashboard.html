@@ -1,6 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="mb-4">ข้อมูลการเงินของฉัน</h1>
+{% set balance_class = 'positive' if balance_total >= 0 else 'negative' %}
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="summary-card income shadow-sm h-100">
+      <span class="summary-label">รายรับรวม</span>
+      <span class="summary-value">฿{{ '{:,.2f}'.format(income_total) }}</span>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="summary-card expense shadow-sm h-100">
+      <span class="summary-label">รายจ่ายรวม</span>
+      <span class="summary-value">฿{{ '{:,.2f}'.format(expense_total) }}</span>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="summary-card balance shadow-sm h-100">
+      <span class="summary-label">คงเหลือ</span>
+      <span class="summary-value {{ balance_class }}">฿{{ '{:,.2f}'.format(balance_total) }}</span>
+    </div>
+  </div>
+</div>
+
 <div class="row g-4">
   <div class="col-lg-4">
     <div class="card shadow-sm">
