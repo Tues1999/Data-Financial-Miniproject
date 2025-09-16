@@ -43,7 +43,7 @@ Excel ที่มีตารางสรุปยอดท้ายไฟล�
 
 1. **เตรียมสภาพแวดล้อม Python** (แนะนำ Python 3.10 ขึ้นไป) และสร้าง virtual environment:
    ```bash
-   ติดตั้ง python [https://www.python.org/](https://www.python.org/downloads/)
+   ติดตั้ง python <https://www.python.org/>
    ```
    ```bash
    python -m venv .venv
