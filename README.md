@@ -45,7 +45,7 @@ Excel ที่มีตารางสรุปยอดท้ายไฟล�
 
    ```bash
    python -m venv .venv
-   source .venv/bin/activate        # บน Windows ใช้ .venv\Scripts\activate
+   .venv\Scripts\activate
    ```
 
 2. **ติดตั้ง dependencies หลัก**:
