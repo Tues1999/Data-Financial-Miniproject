@@ -63,12 +63,6 @@ def _normalize_database_uri(raw_uri: str | None) -> str:
         return str(url)
 
     return candidate
-        db_file = target if target.suffix else target / "finance.db"
-    else:
-        db_file = Path.home() / "FinanceTrackerData" / "finance.db"
-
-    db_file.parent.mkdir(parents=True, exist_ok=True)
-    return f"sqlite:///{db_file.resolve().as_posix()}"
 
 
 def create_app(test_config: dict | None = None) -> Flask:
